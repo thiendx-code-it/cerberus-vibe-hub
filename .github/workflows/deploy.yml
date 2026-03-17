@@ -1,4 +1,8 @@
-name: Deploy
+name: Pre-deploy Quality Gate
+
+# Cloudflare Pages handles build + deploy automatically via Git integration.
+# This workflow runs type-check, lint, and tests as a required status check
+# before Cloudflare picks up the push.
 
 on:
   push:
@@ -6,11 +10,37 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: deploy-production
-  cancel-in-progress: false
+  group: quality-gate-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  build:
+  quality-gate:
+    name: Type-check · Lint · Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type-check
+        run: npx tsc --noEmit
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm run test
+
+
     name: Build
     runs-on: ubuntu-latest
     outputs:
