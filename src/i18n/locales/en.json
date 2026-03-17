@@ -1,0 +1,77 @@
+{
+  "nav": {
+    "feed": "Feed",
+    "favorites": "Favorites",
+    "submit": "Submit"
+  },
+  "home": {
+    "tagline": "Where creative projects from the Cerberus Team community are shared 🔥",
+    "projectCount": "{{count}} projects",
+    "submitProject": "Submit Project",
+    "searchPlaceholder": "Search projects, authors...",
+    "shuffleTitle": "Random",
+    "favoritesTitle": "Favorites",
+    "allCategories": "All",
+    "noProjects": "No projects found 😢",
+    "beFirst": "Be the first to submit!"
+  },
+  "project": {
+    "by": "by",
+    "backButton": "Back",
+    "viewDemo": "View Demo",
+    "sourceCode": "Source Code",
+    "createdAt": "Created: {{date}}",
+    "notFound": "Project not found"
+  },
+  "bookmarks": {
+    "title": "❤️ Favorites",
+    "empty": "No favorite projects yet",
+    "explore": "Explore now",
+    "backButton": "Back"
+  },
+  "submit": {
+    "title": "🚀 Submit Project",
+    "subtitle": "Share your project with the Cerberus Team community",
+    "backButton": "Back",
+    "fields": {
+      "name": "Project Name *",
+      "namePlaceholder": "E.g.: Cerberus Chat",
+      "description": "Description *",
+      "descriptionPlaceholder": "Short description of your project...",
+      "category": "Category *",
+      "categoryPlaceholder": "Select a category",
+      "demoUrl": "Demo URL",
+      "sourceUrl": "Source Code URL",
+      "authorName": "Author Name *",
+      "authorNamePlaceholder": "Your name",
+      "authorUrl": "Profile Link",
+      "urlPlaceholder": "https://...",
+      "githubPlaceholder": "https://github.com/..."
+    },
+    "submitButton": "Submit Project",
+    "submitting": "Submitting...",
+    "successTitle": "🎉 Submitted successfully!",
+    "successMessage": "Your project is pending review. Thank you for your contribution!",
+    "errorTitle": "Error",
+    "errorMessage": "Could not submit project. Please try again."
+  },
+  "validation": {
+    "nameRequired": "Project name is required",
+    "nameMax": "Maximum 200 characters",
+    "descMin": "Description must be at least 10 characters",
+    "descMax": "Maximum 5000 characters",
+    "invalidUrl": "Invalid URL",
+    "categoryRequired": "Please select a category",
+    "authorRequired": "Author name is required",
+    "authorMax": "Maximum 200 characters"
+  },
+  "notFound": {
+    "title": "404",
+    "message": "Oops! Page not found",
+    "returnHome": "Return to Home"
+  },
+  "language": {
+    "en": "EN",
+    "vi": "VI"
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "nav": {
+    "feed": "Feed",
+    "favorites": "Yêu thích",
+    "submit": "Submit"
+  },
+  "home": {
+    "tagline": "Nơi chia sẻ những dự án sáng tạo từ cộng đồng Cerberus Team 🔥",
+    "projectCount": "{{count}} dự án",
+    "submitProject": "Submit Project",
+    "searchPlaceholder": "Tìm kiếm project, tác giả...",
+    "shuffleTitle": "Ngẫu nhiên",
+    "favoritesTitle": "Yêu thích",
+    "allCategories": "Tất cả",
+    "noProjects": "Không tìm thấy project nào 😢",
+    "beFirst": "Hãy là người đầu tiên submit!"
+  },
+  "project": {
+    "by": "bởi",
+    "backButton": "Quay lại",
+    "viewDemo": "Xem Demo",
+    "sourceCode": "Source Code",
+    "createdAt": "Ngày tạo: {{date}}",
+    "notFound": "Không tìm thấy project"
+  },
+  "bookmarks": {
+    "title": "❤️ Yêu thích",
+    "empty": "Chưa có project yêu thích nào",
+    "explore": "Khám phá ngay",
+    "backButton": "Quay lại"
+  },
+  "submit": {
+    "title": "🚀 Submit Project",
+    "subtitle": "Chia sẻ dự án của bạn với cộng đồng Cerberus Team",
+    "backButton": "Quay lại",
+    "fields": {
+      "name": "Tên Project *",
+      "namePlaceholder": "VD: Cerberus Chat",
+      "description": "Mô tả *",
+      "descriptionPlaceholder": "Mô tả ngắn về project...",
+      "category": "Danh mục *",
+      "categoryPlaceholder": "Chọn danh mục",
+      "demoUrl": "URL Demo",
+      "sourceUrl": "URL Source Code",
+      "authorName": "Tên tác giả *",
+      "authorNamePlaceholder": "Tên của bạn",
+      "authorUrl": "Link Profile",
+      "urlPlaceholder": "https://...",
+      "githubPlaceholder": "https://github.com/..."
+    },
+    "submitButton": "Gửi Project",
+    "submitting": "Đang gửi...",
+    "successTitle": "🎉 Gửi thành công!",
+    "successMessage": "Project của bạn đang chờ duyệt. Cảm ơn bạn đã đóng góp!",
+    "errorTitle": "Lỗi",
+    "errorMessage": "Không thể gửi project. Vui lòng thử lại."
+  },
+  "validation": {
+    "nameRequired": "Tên project không được để trống",
+    "nameMax": "Tối đa 200 ký tự",
+    "descMin": "Mô tả ít nhất 10 ký tự",
+    "descMax": "Tối đa 5000 ký tự",
+    "invalidUrl": "URL không hợp lệ",
+    "categoryRequired": "Vui lòng chọn danh mục",
+    "authorRequired": "Tên tác giả không được để trống",
+    "authorMax": "Tối đa 200 ký tự"
+  },
+  "notFound": {
+    "title": "404",
+    "message": "Oops! Trang không tìm thấy",
+    "returnHome": "Về trang chủ"
+  },
+  "language": {
+    "en": "EN",
+    "vi": "VI"
+  }
+}

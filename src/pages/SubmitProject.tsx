@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { ArrowLeft, Send } from "lucide-react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -13,22 +14,31 @@ import { useCategories } from "@/hooks/useProjects";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 
-const formSchema = z.object({
-  name: z.string().trim().min(1, "Tên project không được để trống").max(200, "Tối đa 200 ký tự"),
-  description: z.string().trim().min(10, "Mô tả ít nhất 10 ký tự").max(5000, "Tối đa 5000 ký tự"),
-  demo_url: z.string().url("URL không hợp lệ").or(z.literal("")),
-  source_url: z.string().url("URL không hợp lệ").or(z.literal("")),
-  category_slug: z.string().min(1, "Vui lòng chọn danh mục"),
-  author_name: z.string().trim().min(1, "Tên tác giả không được để trống").max(200, "Tối đa 200 ký tự"),
-  author_url: z.string().url("URL không hợp lệ").or(z.literal("")),
-});
-
-type FormValues = z.infer<typeof formSchema>;
+type FormValues = {
+  name: string;
+  description: string;
+  demo_url: string;
+  source_url: string;
+  category_slug: string;
+  author_name: string;
+  author_url: string;
+};
 
 const SubmitProject = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { data: categories = [] } = useCategories();
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const formSchema = z.object({
+    name: z.string().trim().min(1, t("validation.nameRequired")).max(200, t("validation.nameMax")),
+    description: z.string().trim().min(10, t("validation.descMin")).max(5000, t("validation.descMax")),
+    demo_url: z.string().url(t("validation.invalidUrl")).or(z.literal("")),
+    source_url: z.string().url(t("validation.invalidUrl")).or(z.literal("")),
+    category_slug: z.string().min(1, t("validation.categoryRequired")),
+    author_name: z.string().trim().min(1, t("validation.authorRequired")).max(200, t("validation.authorMax")),
+    author_url: z.string().url(t("validation.invalidUrl")).or(z.literal("")),
+  });
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -58,14 +68,14 @@ const SubmitProject = () => {
       if (error) throw error;
 
       toast({
-        title: "🎉 Gửi thành công!",
-        description: "Project của bạn đang chờ duyệt. Cảm ơn bạn đã đóng góp!",
+        title: t("submit.successTitle"),
+        description: t("submit.successMessage"),
       });
       navigate("/");
     } catch {
       toast({
-        title: "Lỗi",
-        description: "Không thể gửi project. Vui lòng thử lại.",
+        title: t("submit.errorTitle"),
+        description: t("submit.errorMessage"),
         variant: "destructive",
       });
     } finally {
@@ -77,13 +87,13 @@ const SubmitProject = () => {
     <div className="container py-8 max-w-xl mx-auto">
       <Link to="/">
         <Button variant="ghost" size="sm" className="gap-2 mb-6 text-muted-foreground">
-          <ArrowLeft className="h-4 w-4" /> Quay lại
+          <ArrowLeft className="h-4 w-4" /> {t("submit.backButton")}
         </Button>
       </Link>
 
-      <h1 className="font-display text-2xl font-bold mb-2">🚀 Submit Project</h1>
+      <h1 className="font-display text-2xl font-bold mb-2">{t("submit.title")}</h1>
       <p className="text-muted-foreground text-sm mb-8">
-        Chia sẻ dự án của bạn với cộng đồng Cerberus Team
+        {t("submit.subtitle")}
       </p>
 
       <div className="glass rounded-xl p-6">
@@ -91,26 +101,26 @@ const SubmitProject = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
             <FormField control={form.control} name="name" render={({ field }) => (
               <FormItem>
-                <FormLabel>Tên Project *</FormLabel>
-                <FormControl><Input placeholder="VD: Cerberus Chat" {...field} className="bg-secondary" /></FormControl>
+                <FormLabel>{t("submit.fields.name")}</FormLabel>
+                <FormControl><Input placeholder={t("submit.fields.namePlaceholder")} {...field} className="bg-secondary" /></FormControl>
                 <FormMessage />
               </FormItem>
             )} />
 
             <FormField control={form.control} name="description" render={({ field }) => (
               <FormItem>
-                <FormLabel>Mô tả *</FormLabel>
-                <FormControl><Textarea placeholder="Mô tả ngắn về project..." rows={4} {...field} className="bg-secondary" /></FormControl>
+                <FormLabel>{t("submit.fields.description")}</FormLabel>
+                <FormControl><Textarea placeholder={t("submit.fields.descriptionPlaceholder")} rows={4} {...field} className="bg-secondary" /></FormControl>
                 <FormMessage />
               </FormItem>
             )} />
 
             <FormField control={form.control} name="category_slug" render={({ field }) => (
               <FormItem>
-                <FormLabel>Danh mục *</FormLabel>
+                <FormLabel>{t("submit.fields.category")}</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
-                    <SelectTrigger className="bg-secondary"><SelectValue placeholder="Chọn danh mục" /></SelectTrigger>
+                    <SelectTrigger className="bg-secondary"><SelectValue placeholder={t("submit.fields.categoryPlaceholder")} /></SelectTrigger>
                   </FormControl>
                   <SelectContent>
                     {categories.map((cat) => (
@@ -126,39 +136,39 @@ const SubmitProject = () => {
 
             <FormField control={form.control} name="demo_url" render={({ field }) => (
               <FormItem>
-                <FormLabel>URL Demo</FormLabel>
-                <FormControl><Input placeholder="https://..." {...field} className="bg-secondary" /></FormControl>
+                <FormLabel>{t("submit.fields.demoUrl")}</FormLabel>
+                <FormControl><Input placeholder={t("submit.fields.urlPlaceholder")} {...field} className="bg-secondary" /></FormControl>
                 <FormMessage />
               </FormItem>
             )} />
 
             <FormField control={form.control} name="source_url" render={({ field }) => (
               <FormItem>
-                <FormLabel>URL Source Code</FormLabel>
-                <FormControl><Input placeholder="https://github.com/..." {...field} className="bg-secondary" /></FormControl>
+                <FormLabel>{t("submit.fields.sourceUrl")}</FormLabel>
+                <FormControl><Input placeholder={t("submit.fields.githubPlaceholder")} {...field} className="bg-secondary" /></FormControl>
                 <FormMessage />
               </FormItem>
             )} />
 
             <FormField control={form.control} name="author_name" render={({ field }) => (
               <FormItem>
-                <FormLabel>Tên tác giả *</FormLabel>
-                <FormControl><Input placeholder="Tên của bạn" {...field} className="bg-secondary" /></FormControl>
+                <FormLabel>{t("submit.fields.authorName")}</FormLabel>
+                <FormControl><Input placeholder={t("submit.fields.authorNamePlaceholder")} {...field} className="bg-secondary" /></FormControl>
                 <FormMessage />
               </FormItem>
             )} />
 
             <FormField control={form.control} name="author_url" render={({ field }) => (
               <FormItem>
-                <FormLabel>Link Profile</FormLabel>
-                <FormControl><Input placeholder="https://..." {...field} className="bg-secondary" /></FormControl>
+                <FormLabel>{t("submit.fields.authorUrl")}</FormLabel>
+                <FormControl><Input placeholder={t("submit.fields.urlPlaceholder")} {...field} className="bg-secondary" /></FormControl>
                 <FormMessage />
               </FormItem>
             )} />
 
             <Button type="submit" className="w-full gap-2" disabled={isSubmitting}>
               <Send className="h-4 w-4" />
-              {isSubmitting ? "Đang gửi..." : "Gửi Project"}
+              {isSubmitting ? t("submit.submitting") : t("submit.submitButton")}
             </Button>
           </form>
         </Form>

@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Search, Shuffle, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
@@ -9,6 +10,7 @@ import { ProjectCard } from "@/components/ProjectCard";
 import { cn } from "@/lib/utils";
 
 const Index = () => {
+  const { t } = useTranslation();
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
   const { data: projects = [], isLoading } = useProjects();
@@ -53,14 +55,14 @@ const Index = () => {
             <span className="text-gradient">vibe.cerberus</span>
           </h1>
           <p className="mt-4 text-lg text-muted-foreground max-w-xl mx-auto">
-            Nơi chia sẻ những dự án sáng tạo từ cộng đồng Cerberus Team 🔥
+            {t("home.tagline")}
           </p>
           <div className="flex items-center justify-center gap-3 mt-6">
             <Link to="/submit">
-              <Button className="gap-2">Submit Project</Button>
+              <Button className="gap-2">{t("home.submitProject")}</Button>
             </Link>
             <span className="text-sm text-muted-foreground">
-              {projects.length} dự án
+              {t("home.projectCount", { count: projects.length })}
             </span>
           </div>
         </div>
@@ -72,18 +74,18 @@ const Index = () => {
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Tìm kiếm project, tác giả..."
+              placeholder={t("home.searchPlaceholder")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="pl-10 bg-secondary border-border"
             />
           </div>
           <div className="flex gap-2">
-            <Button variant="outline" size="icon" onClick={pickRandom} title="Ngẫu nhiên">
+            <Button variant="outline" size="icon" onClick={pickRandom} title={t("home.shuffleTitle")}>
               <Shuffle className="h-4 w-4" />
             </Button>
             <Link to="/bookmarks">
-              <Button variant="outline" size="icon" title="Yêu thích">
+              <Button variant="outline" size="icon" title={t("home.favoritesTitle")}>
                 <Heart className="h-4 w-4" />
               </Button>
             </Link>
@@ -98,7 +100,7 @@ const Index = () => {
             onClick={() => setActiveCategory("all")}
             className="flex-shrink-0"
           >
-            Tất cả
+            {t("home.allCategories")}
           </Button>
           {categories.map((cat) => (
             <Button
@@ -125,8 +127,8 @@ const Index = () => {
           </div>
         ) : filtered.length === 0 ? (
           <div className="text-center py-16 text-muted-foreground">
-            <p className="text-lg">Không tìm thấy project nào 😢</p>
-            <p className="text-sm mt-2">Hãy là người đầu tiên submit!</p>
+            <p className="text-lg">{t("home.noProjects")}</p>
+            <p className="text-sm mt-2">{t("home.beFirst")}</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

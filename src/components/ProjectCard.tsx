@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Heart, ExternalLink, Github } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -13,6 +14,7 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({ project, index, isBookmarked, onToggleBookmark, categoryIcon }: ProjectCardProps) {
+  const { t } = useTranslation();
   return (
     <div
       className="glass rounded-xl p-5 transition-all duration-150 hover:border-primary/40 hover:glow-primary group animate-fade-in"
@@ -32,7 +34,7 @@ export function ProjectCard({ project, index, isBookmarked, onToggleBookmark, ca
             <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{project.description}</p>
             <div className="flex items-center gap-3 mt-3 text-xs text-muted-foreground">
               <span>{categoryIcon} {project.category_slug}</span>
-              <span>bởi {project.author_name}</span>
+              <span>{t("project.by")} {project.author_name}</span>
             </div>
           </div>
         </div>
