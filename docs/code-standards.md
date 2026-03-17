@@ -1,6 +1,7 @@
 # Cerberus Vibe Hub — Code Standards & Conventions
 
 **Last Updated:** 2026-03-17
+**Version:** 1.0.0
 **Philosophy:** YAGNI, KISS, DRY — simplicity and pragmatism over perfectionism.
 
 ---

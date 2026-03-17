@@ -1,15 +1,15 @@
 # Cerberus Vibe Hub — Codebase Summary
 
 **Last Updated:** 2026-03-17
-**Total LOC:** ~5,400 (excluding node_modules and UI primitives)
-**React Components:** 56+ | **Pages:** 5 | **Apps:** 2 | **Languages:** 2 (EN + VI)
+**Total LOC:** ~5,500 (excluding node_modules and UI primitives)
+**React Components:** 56+ | **Pages:** 6 | **Apps:** 2 | **Languages:** 2 (EN + VI)
 
 ---
 
 ## Directory Structure with LOC
 
 ```
-src/ (5,400 LOC total)
+src/ (~5,500 LOC total)
 ├── apps/ (~150 LOC)
 │   ├── hello-world/ (30 LOC)
 │   │   ├── index.tsx            # Simple greeting component
@@ -46,10 +46,11 @@ src/ (5,400 LOC total)
 │   ├── types.ts (37 LOC)        # AppMeta, Project, Category interfaces
 │   └── utils.ts (43 LOC)        # cn() utility for Tailwind merging
 │
-├── pages/ (~280 LOC)
+├── pages/ (~330 LOC)
 │   ├── Index.tsx (152 LOC)      # Home: search, category filter, grid
 │   ├── ProjectDetail.tsx (75 LOC) # Single project view
 │   ├── Bookmarks.tsx (32 LOC)   # Saved projects list
+│   ├── Leaderboard.tsx (50 LOC) # Top projects ranking
 │   ├── SubmitProject.tsx (18 LOC) # Submission guide
 │   └── NotFound.tsx (3 LOC)     # 404 page
 │

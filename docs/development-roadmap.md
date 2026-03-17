@@ -46,9 +46,11 @@
 - No analytics or usage tracking
 
 ### Metrics
-- Total LOC: ~5,400
+- Total LOC: ~5,500
 - React Components: 56+
 - UI Primitives: 53 (shadcn/ui)
+- Pages: 6 (Index, ProjectDetail, Bookmarks, Leaderboard, SubmitProject, NotFound)
+- Apps: 2 embedded (hello-world, cerberus-calculator)
 - Build time: ~20 seconds
 - Bundle size: ~300-400 KB gzipped
 
@@ -230,18 +232,18 @@
 - [ ] Update meta tags
 
 #### 4.3 GitHub Stats Integration
-**Goal:** Show project popularity
+**Goal:** Show project popularity (if applicable)
 - GitHub star count (fetch from API)
 - Last commit date
 - Active contributors
 - Estimated LOC: 100-150
 
 **Tasks:**
-- [ ] Add GitHub stats API integration
-- [ ] Cache stats (5-min TTL)
+- [ ] Design GitHub integration approach (optional, for external projects)
+- [ ] Add GitHub stats API integration (with caching)
 - [ ] Create StatsWidget component
-- [ ] Update ProjectDetail
-- [ ] Handle API rate limits
+- [ ] Update ProjectDetail conditionally
+- [ ] Handle API rate limits gracefully
 
 ### Acceptance Criteria
 - [ ] Analytics running for 1+ month
@@ -276,14 +278,16 @@
 - [ ] API for third-party integrations
 
 ### When to Add Backend Database
-**Trigger:** If any of these become critical:
-- 100+ daily active users
+**Current Status:** 100% DB-less via Vite static discovery
+
+**Trigger for Backend:** If any of these become critical:
+- 1000+ daily active users
 - Need for user accounts/profiles
 - Real-time project updates required
-- Moderation complaints arise
-- Analytics/trending needed for business decisions
+- Moderation dashboard needed
+- Analytics/trending critical for business decisions
 
-**Recommended:** Supabase PostgreSQL + Auth
+**Note:** Platform is architected to remain DB-less. PRs remain the submission mechanism even at scale.
 
 ---
 

@@ -14,7 +14,8 @@
       "Read(//d/Projects/cerberus-vibe-hub/**)",
       "Bash(done)",
       "Bash(python3:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(command:*)"
     ]
   }
 }

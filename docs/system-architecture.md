@@ -136,10 +136,11 @@ function AppRenderer() {
 
 **Route Map:**
 ```
-/                  → Index (home feed)
+/                  → Index (home feed with search & filter)
 /project/:id       → ProjectDetail (single project view)
-/apps/:slug        → AppRenderer (embedded mini-app)
+/apps/:slug        → AppRenderer (embedded mini-app, lazy-loaded)
 /bookmarks         → Bookmarks (saved projects)
+/leaderboard       → Leaderboard (top projects ranking)
 /submit            → SubmitProject (submission guide)
 /*                 → NotFound (404)
 ```
@@ -171,6 +172,7 @@ const App = () => (
         <Route path="/project/:id" element={<ProjectDetail />} />
         <Route path="/apps/:slug" element={<AppRenderer />} />
         <Route path="/bookmarks" element={<Bookmarks />} />
+        <Route path="/leaderboard" element={<Leaderboard />} />
         <Route path="/submit" element={<SubmitProject />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
@@ -368,9 +370,9 @@ UI renders ProjectCard components
 ```
 Tailwind Config (tailwind.config.ts)
 ├─ Color Theme (dark + semantic colors)
-├─ Typography (Space Grotesk, Inter)
+├─ Typography (IBM Plex Sans body + JetBrains Mono headings/code)
 ├─ Spacing (8px baseline grid)
-└─ Animations (fade, slide)
+└─ Animations (fade, slide, accordion)
     ↓
 shadcn/ui Components (53 Radix UI primitives)
 ├─ Unstyled by default

@@ -50,11 +50,12 @@ npm run lint         # Check code quality
 | **Frontend** | React 18.3 + TypeScript 5.8 |
 | **Build** | Vite 8.0 (dev port: 8080) |
 | **Styling** | Tailwind CSS 3.4 + shadcn/ui (53 Radix UI components) |
+| **Fonts** | JetBrains Mono (headings/code) + IBM Plex Sans (body) |
 | **Routing** | React Router v6.30 |
 | **i18n** | i18next 25.8 (EN + VI) |
-| **Forms** | React Hook Form 7.61 + Zod 3.25 |
-| **Testing** | Vitest 4.1 + Testing Library + Playwright 1.57 |
-| **Fonts** | Space Grotesk (display) + Inter (sans) |
+| **Forms** | React Hook Form 7.61 + Zod 3.25 (validation) |
+| **Testing** | Vitest 4.1 + Testing Library 16 + Playwright 1.57 (E2E) |
+| **Design** | Dark theme with crimson primary + neon accents (cyan/purple) |
 
 ---
 
@@ -123,8 +124,9 @@ src/
 
 - `/` — Project feed with search and category filter
 - `/project/:id` — Project detail page
-- `/apps/:slug` — Mini-app renderer (lazy-loaded)
+- `/apps/:slug` — Mini-app renderer (lazy-loaded embedded app)
 - `/bookmarks` — Saved projects
+- `/leaderboard` — Project leaderboard (top submissions)
 - `/submit` — How to submit guide
 - `/*` — 404 Not Found
 
