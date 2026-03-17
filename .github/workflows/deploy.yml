@@ -1,0 +1,93 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    outputs:
+      artifact-id: ${{ steps.upload.outputs.artifact-id }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type-check
+        run: npx tsc --noEmit
+
+      - name: Build
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: Upload dist
+        id: upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-${{ github.sha }}
+          path: dist/
+          retention-days: 1
+
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: production
+      url: http://vibe.cerberuslab.pro/
+
+    steps:
+      - name: Download dist
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-${{ github.sha }}
+          path: dist/
+
+      # ── Replace the step below with your actual deployment method ──────────
+      # Option A: rsync to VPS
+      # - name: Deploy via rsync
+      #   uses: burnett01/rsync-deployments@7.0.1
+      #   with:
+      #     switches: -avzr --delete
+      #     path: dist/
+      #     remote_path: ${{ secrets.DEPLOY_PATH }}
+      #     remote_host: ${{ secrets.DEPLOY_HOST }}
+      #     remote_user: ${{ secrets.DEPLOY_USER }}
+      #     remote_key: ${{ secrets.DEPLOY_SSH_KEY }}
+
+      # Option B: Cloudflare Pages
+      # - name: Deploy to Cloudflare Pages
+      #   uses: cloudflare/pages-action@v1
+      #   with:
+      #     apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      #     accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      #     projectName: cerberus-vibe-hub
+      #     directory: dist
+
+      # Option C: GitHub Pages (uncomment and remove the placeholder below)
+      # - name: Deploy to GitHub Pages
+      #   uses: peaceiris/actions-gh-pages@v4
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     publish_dir: dist
+
+      - name: Deployment complete
+        run: echo "Dist is ready. Uncomment your deployment provider above."
+      # ────────────────────────────────────────────────────────────────────────

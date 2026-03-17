@@ -1,5 +1,28 @@
-import type { Database } from "@/integrations/supabase/types";
+export interface Project {
+  id: string;
+  name: string;
+  description: string;
+  author_name: string;
+  author_url: string | null;
+  category_slug: string;
+  created_at: string;
+  has_local_app: boolean;
+}
 
-export type Project = Database["public"]["Tables"]["projects"]["Row"];
-export type ProjectInsert = Database["public"]["Tables"]["projects"]["Insert"];
-export type Category = Database["public"]["Tables"]["categories"]["Row"];
+export interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  icon: string;
+  sort_order: number;
+  created_at: string;
+}
+
+export interface AppMeta {
+  name: string;
+  description: string;
+  author_name: string;
+  author_url?: string | null;
+  category_slug: string;
+  created_at: string;
+}

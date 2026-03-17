@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,47 +6,49 @@
 
 @layer base {
   :root {
-    --background: 222 47% 6%;
-    --foreground: 210 40% 96%;
+    --background: 224 47% 4%;
+    --foreground: 220 20% 92%;
 
-    --card: 222 47% 9%;
-    --card-foreground: 210 40% 96%;
+    --card: 228 42% 7%;
+    --card-foreground: 220 20% 92%;
 
-    --popover: 222 47% 9%;
-    --popover-foreground: 210 40% 96%;
+    --popover: 228 42% 7%;
+    --popover-foreground: 220 20% 92%;
 
-    --primary: 347 77% 50%;
-    --primary-foreground: 0 0% 100%;
+    /* Cyan neon primary */
+    --primary: 189 100% 50%;
+    --primary-foreground: 224 47% 4%;
 
-    --secondary: 222 30% 14%;
-    --secondary-foreground: 210 40% 90%;
+    --secondary: 228 35% 12%;
+    --secondary-foreground: 220 20% 75%;
 
-    --muted: 222 30% 14%;
-    --muted-foreground: 215 20% 55%;
+    --muted: 228 35% 12%;
+    --muted-foreground: 215 20% 46%;
 
-    --accent: 347 77% 50%;
+    /* Purple accent */
+    --accent: 271 90% 63%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 222 30% 18%;
-    --input: 222 30% 18%;
-    --ring: 347 77% 50%;
+    --border: 228 35% 14%;
+    --input: 228 35% 14%;
+    --ring: 189 100% 50%;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
-    --sidebar-background: 222 47% 8%;
-    --sidebar-foreground: 210 40% 90%;
-    --sidebar-primary: 347 77% 50%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 222 30% 14%;
-    --sidebar-accent-foreground: 210 40% 90%;
-    --sidebar-border: 222 30% 18%;
-    --sidebar-ring: 347 77% 50%;
+    --sidebar-background: 228 42% 6%;
+    --sidebar-foreground: 220 20% 80%;
+    --sidebar-primary: 189 100% 50%;
+    --sidebar-primary-foreground: 224 47% 4%;
+    --sidebar-accent: 228 35% 12%;
+    --sidebar-accent-foreground: 220 20% 75%;
+    --sidebar-border: 228 35% 14%;
+    --sidebar-ring: 189 100% 50%;
 
-    --glass-bg: 222 47% 9% / 0.6;
-    --glass-border: 222 30% 22%;
+    --glass-bg: 228 42% 7% / 0.8;
+    --glass-border: 228 35% 16%;
   }
 }
 
@@ -56,28 +58,75 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans;
-    font-family: 'Inter', sans-serif;
+    @apply bg-background text-foreground;
+    font-family: 'IBM Plex Sans', sans-serif;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  ::selection {
+    background: hsl(189 100% 50% / 0.2);
+    color: hsl(189 100% 90%);
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--background));
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 2px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(189 100% 50% / 0.4);
   }
 }
 
 @layer utilities {
   .glass {
     background: hsl(var(--glass-bg));
-    backdrop-filter: blur(16px);
+    backdrop-filter: blur(12px);
     border: 1px solid hsl(var(--glass-border));
   }
 
   .glow-primary {
-    box-shadow: 0 0 30px -5px hsl(347 77% 50% / 0.3);
+    box-shadow: 0 0 28px -4px hsl(189 100% 50% / 0.2);
+  }
+
+  .glow-purple {
+    box-shadow: 0 0 28px -4px hsl(271 90% 63% / 0.2);
   }
 
   .text-gradient {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, hsl(347 77% 55%), hsl(347 90% 65%));
+    background-image: linear-gradient(135deg, hsl(189 100% 55%), hsl(271 90% 68%));
+  }
+
+  .neon-border-cyan {
+    border-color: hsl(189 100% 50% / 0.5) !important;
+    box-shadow: 0 0 16px -3px hsl(189 100% 50% / 0.15);
+  }
+
+  .neon-border-purple {
+    border-color: hsl(271 90% 63% / 0.5) !important;
+    box-shadow: 0 0 16px -3px hsl(271 90% 63% / 0.15);
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .font-mono {
+    font-family: 'JetBrains Mono', monospace;
   }
 }

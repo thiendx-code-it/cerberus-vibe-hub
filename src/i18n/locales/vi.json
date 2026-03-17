@@ -1,6 +1,7 @@
 {
   "nav": {
     "feed": "Feed",
+    "leaderboard": "Bảng xếp hạng",
     "favorites": "Yêu thích",
     "submit": "Submit"
   },
@@ -20,6 +21,7 @@
     "backButton": "Quay lại",
     "viewDemo": "Xem Demo",
     "sourceCode": "Source Code",
+    "launchApp": "Mở App",
     "createdAt": "Ngày tạo: {{date}}",
     "notFound": "Không tìm thấy project"
   },
@@ -31,8 +33,31 @@
   },
   "submit": {
     "title": "🚀 Submit Project",
-    "subtitle": "Chia sẻ dự án của bạn với cộng đồng Cerberus Team",
+    "subtitle": "Chia sẻ dự án của bạn với cộng đồng Cerberus Team qua Pull Request — không cần database!",
     "backButton": "Quay lại",
+    "openRepo": "Mở Repository trên GitHub",
+    "steps": {
+      "fork": {
+        "title": "1. Fork & Clone",
+        "desc": "Fork repository này và clone về máy của bạn, sau đó cài đặt các dependencies."
+      },
+      "folder": {
+        "title": "2. Tạo thư mục app",
+        "desc": "Tạo một thư mục mới trong src/apps/ với slug duy nhất của app."
+      },
+      "meta": {
+        "title": "3. Thêm meta.ts",
+        "desc": "Tạo file meta.ts với thông tin dự án. Đây là file bắt buộc duy nhất."
+      },
+      "app": {
+        "title": "4. Thêm index.tsx (tuỳ chọn)",
+        "desc": "Nếu muốn có mini-app được nhúng vào hub, tạo file index.tsx với default export."
+      },
+      "pr": {
+        "title": "5. Mở Pull Request",
+        "desc": "Push branch của bạn và mở PR. Chúng tôi sẽ review và merge — app sẽ tự động xuất hiện!"
+      }
+    },
     "fields": {
       "name": "Tên Project *",
       "namePlaceholder": "VD: Cerberus Chat",
@@ -73,5 +98,18 @@
   "language": {
     "en": "EN",
     "vi": "VI"
+  },
+  "leaderboard": {
+    "title": "Bảng xếp hạng",
+    "subtitle": "Xếp hạng dựa trên mức độ hoàn thiện dự án và đóng góp của thành viên",
+    "tab": {
+      "projects": "Dự án",
+      "contributors": "Thành viên"
+    },
+    "projectsDesc": "Điểm: app nhúng (+3), demo (+2), source (+2), thumbnail (+1), mô tả đầy đủ (+2)",
+    "contributorsDesc": "Xếp hạng theo tổng số dự án đã submit",
+    "projects": "dự án",
+    "empty": "Chưa có dự án nào — hãy là người đầu tiên!",
+    "submit": "Submit dự án"
   }
 }

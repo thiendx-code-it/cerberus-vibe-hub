@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Search, Shuffle, Heart } from "lucide-react";
+import { Search, Shuffle, Terminal } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -49,19 +49,34 @@ const Index = () => {
   return (
     <div className="min-h-screen">
       {/* Hero */}
-      <section className="py-16 md:py-24 text-center">
-        <div className="container">
-          <h1 className="font-display text-4xl md:text-6xl font-bold">
+      <section className="pt-16 pb-12 md:pt-24 md:pb-16">
+        <div className="container max-w-3xl">
+          {/* Terminal prompt */}
+          <div className="flex items-center gap-2 text-muted-foreground font-mono text-sm mb-4">
+            <Terminal className="h-3.5 w-3.5 text-primary" />
+            <span className="text-primary">~</span>
+            <span className="text-muted-foreground/60">$</span>
+            <span>what did you build?</span>
+            <span className="w-2 h-4 bg-primary/80 animate-pulse inline-block ml-0.5" />
+          </div>
+
+          <h1 className="font-mono text-5xl md:text-7xl font-bold leading-none">
             <span className="text-gradient">vibe.cerberus</span>
           </h1>
-          <p className="mt-4 text-lg text-muted-foreground max-w-xl mx-auto">
+
+          <p className="mt-5 text-base text-muted-foreground max-w-lg font-sans leading-relaxed">
             {t("home.tagline")}
           </p>
-          <div className="flex items-center justify-center gap-3 mt-6">
+
+          <div className="flex items-center gap-4 mt-7">
             <Link to="/submit">
-              <Button className="gap-2">{t("home.submitProject")}</Button>
+              <Button
+                className="gap-2 font-mono text-sm cursor-pointer bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-200 hover:shadow-[0_0_20px_-2px_hsl(189_100%_50%/0.4)]"
+              >
+                {t("home.submitProject")} →
+              </Button>
             </Link>
-            <span className="text-sm text-muted-foreground">
+            <span className="font-mono text-xs text-muted-foreground/60 border border-border/50 px-2 py-1 rounded">
               {t("home.projectCount", { count: projects.length })}
             </span>
           </div>
@@ -69,69 +84,75 @@ const Index = () => {
       </section>
 
       {/* Search & Filters */}
-      <section className="container pb-6">
-        <div className="flex flex-col sm:flex-row gap-3">
+      <section className="container max-w-3xl pb-6">
+        <div className="flex gap-2">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 font-mono text-xs text-primary/60 select-none">&gt;</span>
             <Input
               placeholder={t("home.searchPlaceholder")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-10 bg-secondary border-border"
+              className="pl-8 bg-secondary/60 border-border/60 font-mono text-sm placeholder:text-muted-foreground/50 focus-visible:ring-primary/50 focus-visible:border-primary/40 transition-colors duration-200"
             />
           </div>
-          <div className="flex gap-2">
-            <Button variant="outline" size="icon" onClick={pickRandom} title={t("home.shuffleTitle")}>
-              <Shuffle className="h-4 w-4" />
-            </Button>
-            <Link to="/bookmarks">
-              <Button variant="outline" size="icon" title={t("home.favoritesTitle")}>
-                <Heart className="h-4 w-4" />
-              </Button>
-            </Link>
-          </div>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={pickRandom}
+            title={t("home.shuffleTitle")}
+            className="cursor-pointer border-border/60 hover:border-primary/40 hover:text-primary transition-colors duration-200"
+          >
+            <Shuffle className="h-4 w-4" />
+          </Button>
         </div>
 
-        {/* Category tabs */}
-        <div className="flex gap-2 mt-4 overflow-x-auto pb-2 scrollbar-hide">
-          <Button
-            variant={activeCategory === "all" ? "default" : "outline"}
-            size="sm"
+        {/* Category / Vibe tags */}
+        <div className="flex gap-1.5 mt-4 overflow-x-auto pb-2 scrollbar-hide">
+          <button
             onClick={() => setActiveCategory("all")}
-            className="flex-shrink-0"
+            className={cn(
+              "flex-shrink-0 px-3 py-1 rounded-full font-mono text-xs border transition-all duration-200 cursor-pointer",
+              activeCategory === "all"
+                ? "bg-primary/10 border-primary/50 text-primary shadow-[0_0_10px_-2px_hsl(189_100%_50%/0.3)]"
+                : "border-border/60 text-muted-foreground hover:border-border hover:text-foreground"
+            )}
           >
             {t("home.allCategories")}
-          </Button>
+          </button>
           {categories.map((cat) => (
-            <Button
+            <button
               key={cat.slug}
-              variant={activeCategory === cat.slug ? "default" : "outline"}
-              size="sm"
               onClick={() => setActiveCategory(cat.slug)}
-              className="flex-shrink-0 gap-1"
+              className={cn(
+                "flex-shrink-0 px-3 py-1 rounded-full font-mono text-xs border transition-all duration-200 cursor-pointer gap-1 inline-flex items-center",
+                activeCategory === cat.slug
+                  ? "bg-primary/10 border-primary/50 text-primary shadow-[0_0_10px_-2px_hsl(189_100%_50%/0.3)]"
+                  : "border-border/60 text-muted-foreground hover:border-border hover:text-foreground"
+              )}
             >
               <span>{cat.icon}</span>
               <span>{cat.name}</span>
-            </Button>
+            </button>
           ))}
         </div>
       </section>
 
       {/* Project Grid */}
-      <section className="container pb-16">
+      <section className="container max-w-5xl pb-20">
         {isLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="glass rounded-xl p-5 h-32 animate-pulse" />
+              <div key={i} className="glass rounded-lg p-5 h-36 animate-pulse" />
             ))}
           </div>
         ) : filtered.length === 0 ? (
-          <div className="text-center py-16 text-muted-foreground">
-            <p className="text-lg">{t("home.noProjects")}</p>
-            <p className="text-sm mt-2">{t("home.beFirst")}</p>
+          <div className="text-center py-20 text-muted-foreground font-mono">
+            <p className="text-sm text-primary/60">{"// no results"}</p>
+            <p className="text-lg mt-2">{t("home.noProjects")}</p>
+            <p className="text-sm mt-1 text-muted-foreground/60">{t("home.beFirst")}</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
             {filtered.map((project, i) => (
               <ProjectCard
                 key={project.id}

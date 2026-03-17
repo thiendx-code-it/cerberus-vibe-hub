@@ -1,10 +1,12 @@
 import { useParams, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { ArrowLeft, ExternalLink, Github, Heart } from "lucide-react";
+import { ArrowLeft, Github, Heart, Rocket } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useProject, useCategories } from "@/hooks/useProjects";
 import { useBookmarks } from "@/hooks/useBookmarks";
 import { cn } from "@/lib/utils";
+
+const REPO_URL = "https://github.com/thiendx-code-it/cerberus-vibe-hub";
 
 const ProjectDetail = () => {
   const { t, i18n } = useTranslation();
@@ -79,20 +81,22 @@ const ProjectDetail = () => {
         <p className="mt-6 text-foreground/90 leading-relaxed whitespace-pre-wrap">{project.description}</p>
 
         <div className="flex flex-wrap gap-3 mt-8">
-          {project.demo_url && (
-            <a href={project.demo_url} target="_blank" rel="noopener noreferrer">
+          {project.has_local_app && (
+            <Link to={`/apps/${project.id}`}>
               <Button className="gap-2">
-                <ExternalLink className="h-4 w-4" /> {t("project.viewDemo")}
+                <Rocket className="h-4 w-4" /> {t("project.launchApp")}
               </Button>
-            </a>
+            </Link>
           )}
-          {project.source_url && (
-            <a href={project.source_url} target="_blank" rel="noopener noreferrer">
-              <Button variant="outline" className="gap-2">
-                <Github className="h-4 w-4" /> {t("project.sourceCode")}
-              </Button>
-            </a>
-          )}
+          <a
+            href={`${REPO_URL}/tree/main/src/apps/${project.id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Button variant="outline" className="gap-2">
+              <Github className="h-4 w-4" /> {t("project.sourceCode")}
+            </Button>
+          </a>
         </div>
 
         <p className="mt-6 text-xs text-muted-foreground">

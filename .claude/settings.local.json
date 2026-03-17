@@ -4,7 +4,17 @@
       "Bash(grep:*)",
       "Bash(npm install:*)",
       "Bash(cd:*)",
-      "Bash(npm test:*)"
+      "Bash(npm test:*)",
+      "Bash(find:*)",
+      "Bash(wc:*)",
+      "Bash(\"/tmp/doc-summary.txt\":*)",
+      "Read(//tmp/**)",
+      "Bash(while read:*)",
+      "Bash(do echo:*)",
+      "Read(//d/Projects/cerberus-vibe-hub/**)",
+      "Bash(done)",
+      "Bash(python3:*)",
+      "Bash(rm:*)"
     ]
   }
 }

@@ -1,6 +1,7 @@
 {
   "nav": {
     "feed": "Feed",
+    "leaderboard": "Leaderboard",
     "favorites": "Favorites",
     "submit": "Submit"
   },
@@ -20,6 +21,7 @@
     "backButton": "Back",
     "viewDemo": "View Demo",
     "sourceCode": "Source Code",
+    "launchApp": "Launch App",
     "createdAt": "Created: {{date}}",
     "notFound": "Project not found"
   },
@@ -31,8 +33,31 @@
   },
   "submit": {
     "title": "🚀 Submit Project",
-    "subtitle": "Share your project with the Cerberus Team community",
+    "subtitle": "Share your project with the Cerberus Team community via Pull Request — no database needed!",
     "backButton": "Back",
+    "openRepo": "Open Repository on GitHub",
+    "steps": {
+      "fork": {
+        "title": "1. Fork & Clone",
+        "desc": "Fork this repository and clone it to your machine, then install dependencies."
+      },
+      "folder": {
+        "title": "2. Create your app folder",
+        "desc": "Create a new folder inside src/apps/ with your app's unique slug name."
+      },
+      "meta": {
+        "title": "3. Add meta.ts",
+        "desc": "Create meta.ts with your project info. This is the only required file."
+      },
+      "app": {
+        "title": "4. Add index.tsx (optional)",
+        "desc": "If you want an embedded mini-app the hub can launch, create index.tsx with a default export."
+      },
+      "pr": {
+        "title": "5. Open a Pull Request",
+        "desc": "Push your branch and open a PR. We'll review and merge it — your app appears automatically!"
+      }
+    },
     "fields": {
       "name": "Project Name *",
       "namePlaceholder": "E.g.: Cerberus Chat",
@@ -73,5 +98,18 @@
   "language": {
     "en": "EN",
     "vi": "VI"
+  },
+  "leaderboard": {
+    "title": "Leaderboard",
+    "subtitle": "Rankings based on project completeness and contributor activity",
+    "tab": {
+      "projects": "Projects",
+      "contributors": "Contributors"
+    },
+    "projectsDesc": "Scored by: embedded app (+3), demo (+2), source (+2), thumbnail (+1), description quality (+2)",
+    "contributorsDesc": "Ranked by total number of projects submitted",
+    "projects": "projects",
+    "empty": "No projects yet — be the first!",
+    "submit": "Submit a Project"
   }
 }

@@ -1,0 +1,74 @@
+name: PR Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+concurrency:
+  group: pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate PR
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type-check
+        run: npx tsc --noEmit
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm run test
+
+      - name: Build (verify no build errors)
+        run: npm run build
+
+  check-new-apps:
+    name: Validate new apps
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect new app directories
+        id: detect
+        run: |
+          NEW_APPS=$(git diff --name-only origin/${{ github.base_ref }}...HEAD \
+            | grep '^src/apps/' \
+            | cut -d'/' -f3 \
+            | sort -u)
+          echo "New/changed apps: $NEW_APPS"
+          echo "apps=$NEW_APPS" >> $GITHUB_OUTPUT
+
+      - name: Check each new app has meta.ts
+        if: steps.detect.outputs.apps != ''
+        run: |
+          MISSING=0
+          for app in ${{ steps.detect.outputs.apps }}; do
+            META="src/apps/$app/meta.ts"
+            if [ ! -f "$META" ]; then
+              echo "❌ Missing: $META"
+              MISSING=1
+            else
+              echo "✅ Found: $META"
+            fi
+          done
+          exit $MISSING

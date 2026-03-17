@@ -11,6 +11,7 @@
     <meta name="keywords" content="cerberus, vibe coding, project showcase, community, sáng tạo, lập trình" />
     <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#c0183c" />
+    <link rel="manifest" href="/manifest.webmanifest" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
@@ -27,6 +28,13 @@
 
   <body>
     <div id="root"></div>
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+          for (var r of registrations) { r.unregister(); }
+        });
+      }
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

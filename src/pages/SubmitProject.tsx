@@ -1,177 +1,110 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { ArrowLeft, Send } from "lucide-react";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { ArrowLeft, GitBranch, GitPullRequest, FolderPlus, FileCode2, Code2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { useCategories } from "@/hooks/useProjects";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "@/hooks/use-toast";
 
-type FormValues = {
-  name: string;
-  description: string;
-  demo_url: string;
-  source_url: string;
-  category_slug: string;
-  author_name: string;
-  author_url: string;
-};
+const REPO_URL = "https://github.com/thiendx-code-it/cerberus-vibe-hub";
+
+type Pkg = "npm" | "pnpm";
+
+const install = (pkg: Pkg) => (pkg === "pnpm" ? "pnpm install" : "npm install");
+const run = (pkg: Pkg, script: string) =>
+  pkg === "pnpm" ? `pnpm ${script}` : `npm run ${script}`;
+
+const getSteps = (pkg: Pkg) => [
+  {
+    icon: GitBranch,
+    titleKey: "submit.steps.fork.title",
+    descKey: "submit.steps.fork.desc",
+    code: `git clone ${REPO_URL}.git\ncd cerberus-vibe-hub\n${install(pkg)}`,
+  },
+  {
+    icon: FolderPlus,
+    titleKey: "submit.steps.folder.title",
+    descKey: "submit.steps.folder.desc",
+    code: `src/apps/your-app-slug/\n├── meta.ts      # Project info (required)\n└── index.tsx    # Mini-app component (optional)`,
+  },
+  {
+    icon: FileCode2,
+    titleKey: "submit.steps.meta.title",
+    descKey: "submit.steps.meta.desc",
+    code: `import type { AppMeta } from "@/lib/types";\n\nexport const meta: AppMeta = {\n  name: "Your App Name",\n  description: "What does your app do?",\n  author_name: "Your Name",\n  author_url: "https://github.com/yourname", // optional\n  category_slug: "fun", // game | tool | fun | app | other\n  created_at: "${new Date().toISOString().slice(0, 10)}T00:00:00Z",\n};`,
+  },
+  {
+    icon: Code2,
+    titleKey: "submit.steps.app.title",
+    descKey: "submit.steps.app.desc",
+    code: `# Scaffold a new app interactively:\n${run(pkg, "create:page")}\n\n# Or create the files manually:\n// src/apps/your-app-slug/index.tsx\nexport default function YourApp() {\n  return <div>Your App 🚀</div>;\n}`,
+  },
+  {
+    icon: GitPullRequest,
+    titleKey: "submit.steps.pr.title",
+    descKey: "submit.steps.pr.desc",
+    code: `git checkout -b feat/your-app-slug\ngit add .\ngit commit -m "feat: add your-app-slug"\ngit push origin feat/your-app-slug\n# Then open a Pull Request on GitHub!`,
+  },
+];
 
 const SubmitProject = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const { data: categories = [] } = useCategories();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const formSchema = z.object({
-    name: z.string().trim().min(1, t("validation.nameRequired")).max(200, t("validation.nameMax")),
-    description: z.string().trim().min(10, t("validation.descMin")).max(5000, t("validation.descMax")),
-    demo_url: z.string().url(t("validation.invalidUrl")).or(z.literal("")),
-    source_url: z.string().url(t("validation.invalidUrl")).or(z.literal("")),
-    category_slug: z.string().min(1, t("validation.categoryRequired")),
-    author_name: z.string().trim().min(1, t("validation.authorRequired")).max(200, t("validation.authorMax")),
-    author_url: z.string().url(t("validation.invalidUrl")).or(z.literal("")),
-  });
-
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      description: "",
-      demo_url: "",
-      source_url: "",
-      category_slug: "",
-      author_name: "",
-      author_url: "",
-    },
-  });
-
-  const onSubmit = async (values: FormValues) => {
-    setIsSubmitting(true);
-    try {
-      const { error } = await supabase.from("projects").insert({
-        name: values.name,
-        description: values.description,
-        demo_url: values.demo_url || null,
-        source_url: values.source_url || null,
-        category_slug: values.category_slug,
-        author_name: values.author_name,
-        author_url: values.author_url || null,
-      });
-      if (error) throw error;
-
-      toast({
-        title: t("submit.successTitle"),
-        description: t("submit.successMessage"),
-      });
-      navigate("/");
-    } catch {
-      toast({
-        title: t("submit.errorTitle"),
-        description: t("submit.errorMessage"),
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  const [pkg, setPkg] = useState<Pkg>("npm");
+  const steps = getSteps(pkg);
 
   return (
-    <div className="container py-8 max-w-xl mx-auto">
+    <div className="container py-8 max-w-2xl mx-auto">
       <Link to="/">
         <Button variant="ghost" size="sm" className="gap-2 mb-6 text-muted-foreground">
           <ArrowLeft className="h-4 w-4" /> {t("submit.backButton")}
         </Button>
       </Link>
 
-      <h1 className="font-display text-2xl font-bold mb-2">{t("submit.title")}</h1>
-      <p className="text-muted-foreground text-sm mb-8">
-        {t("submit.subtitle")}
-      </p>
+      <div className="flex items-start justify-between gap-4 mb-8">
+        <div>
+          <h1 className="font-display text-2xl font-bold mb-1">{t("submit.title")}</h1>
+          <p className="text-muted-foreground text-sm">{t("submit.subtitle")}</p>
+        </div>
+        <div className="flex items-center gap-1 bg-secondary rounded-lg p-1 flex-shrink-0">
+          {(["npm", "pnpm"] as Pkg[]).map((p) => (
+            <button
+              key={p}
+              onClick={() => setPkg(p)}
+              className={[
+                "px-3 py-1 rounded-md text-xs font-semibold transition-colors",
+                pkg === p
+                  ? "bg-card text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground",
+              ].join(" ")}
+            >
+              {p}
+            </button>
+          ))}
+        </div>
+      </div>
 
-      <div className="glass rounded-xl p-6">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-            <FormField control={form.control} name="name" render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("submit.fields.name")}</FormLabel>
-                <FormControl><Input placeholder={t("submit.fields.namePlaceholder")} {...field} className="bg-secondary" /></FormControl>
-                <FormMessage />
-              </FormItem>
-            )} />
+      <div className="space-y-4">
+        {steps.map((step, i) => (
+          <div key={i} className="glass rounded-xl p-5">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-primary/10 text-primary flex-shrink-0">
+                <step.icon className="h-4 w-4" />
+              </div>
+              <h3 className="font-display font-semibold">{t(step.titleKey)}</h3>
+            </div>
+            <p className="text-sm text-muted-foreground mb-3">{t(step.descKey)}</p>
+            <pre className="bg-secondary rounded-lg p-4 text-xs overflow-x-auto text-foreground/80 leading-relaxed">
+              <code>{step.code}</code>
+            </pre>
+          </div>
+        ))}
+      </div>
 
-            <FormField control={form.control} name="description" render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("submit.fields.description")}</FormLabel>
-                <FormControl><Textarea placeholder={t("submit.fields.descriptionPlaceholder")} rows={4} {...field} className="bg-secondary" /></FormControl>
-                <FormMessage />
-              </FormItem>
-            )} />
-
-            <FormField control={form.control} name="category_slug" render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("submit.fields.category")}</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger className="bg-secondary"><SelectValue placeholder={t("submit.fields.categoryPlaceholder")} /></SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {categories.map((cat) => (
-                      <SelectItem key={cat.slug} value={cat.slug}>
-                        {cat.icon} {cat.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )} />
-
-            <FormField control={form.control} name="demo_url" render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("submit.fields.demoUrl")}</FormLabel>
-                <FormControl><Input placeholder={t("submit.fields.urlPlaceholder")} {...field} className="bg-secondary" /></FormControl>
-                <FormMessage />
-              </FormItem>
-            )} />
-
-            <FormField control={form.control} name="source_url" render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("submit.fields.sourceUrl")}</FormLabel>
-                <FormControl><Input placeholder={t("submit.fields.githubPlaceholder")} {...field} className="bg-secondary" /></FormControl>
-                <FormMessage />
-              </FormItem>
-            )} />
-
-            <FormField control={form.control} name="author_name" render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("submit.fields.authorName")}</FormLabel>
-                <FormControl><Input placeholder={t("submit.fields.authorNamePlaceholder")} {...field} className="bg-secondary" /></FormControl>
-                <FormMessage />
-              </FormItem>
-            )} />
-
-            <FormField control={form.control} name="author_url" render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("submit.fields.authorUrl")}</FormLabel>
-                <FormControl><Input placeholder={t("submit.fields.urlPlaceholder")} {...field} className="bg-secondary" /></FormControl>
-                <FormMessage />
-              </FormItem>
-            )} />
-
-            <Button type="submit" className="w-full gap-2" disabled={isSubmitting}>
-              <Send className="h-4 w-4" />
-              {isSubmitting ? t("submit.submitting") : t("submit.submitButton")}
-            </Button>
-          </form>
-        </Form>
+      <div className="mt-6 text-center">
+        <a href={REPO_URL} target="_blank" rel="noopener noreferrer">
+          <Button className="gap-2">
+            <GitPullRequest className="h-4 w-4" />
+            {t("submit.openRepo")}
+          </Button>
+        </a>
       </div>
     </div>
   );

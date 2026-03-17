@@ -1,47 +1,16 @@
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { projects } from "@/data/projects";
+import { categories } from "@/data/categories";
 import type { Project, Category } from "@/lib/types";
 
 export function useProjects() {
-  return useQuery<Project[]>({
-    queryKey: ["projects"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("projects")
-        .select("*")
-        .order("created_at", { ascending: false });
-      if (error) throw error;
-      return data;
-    },
-  });
+  return { data: projects as Project[], isLoading: false };
 }
 
 export function useCategories() {
-  return useQuery<Category[]>({
-    queryKey: ["categories"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("categories")
-        .select("*")
-        .order("sort_order", { ascending: true });
-      if (error) throw error;
-      return data;
-    },
-  });
+  return { data: categories as Category[], isLoading: false };
 }
 
 export function useProject(id: string) {
-  return useQuery<Project>({
-    queryKey: ["project", id],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("projects")
-        .select("*")
-        .eq("id", id)
-        .single();
-      if (error) throw error;
-      return data;
-    },
-    enabled: !!id,
-  });
+  const project = projects.find((p) => p.id === id) ?? null;
+  return { data: project as Project | null, isLoading: false };
 }
